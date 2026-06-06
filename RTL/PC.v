@@ -13,7 +13,7 @@ module PC (
     else if (jump)
         pc <= jump_addr;    
     else if (en)
-        pc <= pc + 16'd1;    
+        pc <= pc + 16'd3;      // PC = PC + 3
 end
 
 endmodule
