@@ -38,6 +38,13 @@ module SUBLEQ_CPU(
         .dout(mem_dout)
     );
 
+    // Instantiate ALU -requires registers 
+    // ALU alu_inst (
+    //     .inputA(),
+    //     .inputB(),
+    //     .outputB(),
+    //     .LEQ()
+    // );
     // -------------------------
     // Placeholder connections
     // -------------------------
