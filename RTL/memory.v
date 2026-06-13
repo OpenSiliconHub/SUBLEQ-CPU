@@ -18,7 +18,11 @@ module UnifiedMemory (
     end
 
     // Preload program/data from file for FPGA initialization
+    integer i;
     initial begin
+	for (i=0; i<65536; i = i + 1) begin
+	    mem[i] = 16'h0000;
+	end
         $readmemh("program.hex", mem);
     end
 
