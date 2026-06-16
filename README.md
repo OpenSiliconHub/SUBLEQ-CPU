@@ -43,7 +43,7 @@ Following the stable **v1.0 release**, primary development by the core maintaine
 
 We warmly welcome open-source contributions to expand the features of this educational core. Key focus areas include:
 * **Verification:** Enhancing testbenches, edge-case coverage, and formal verification.
-* **Harvard Architecture:** Creating a varient with distinct Instruction and Data memory buses.
+* **Harvard Architecture:** Creating a variant with distinct Instruction and Data memory buses.
 * **Peripherals:** Integrating memory-mapped GPIO controllers for hardware interaction.
 * **Tooling:** Developing simple assemblers/compilers targeting this core architecture.
 
