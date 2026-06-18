@@ -15,7 +15,7 @@ OSH-SUBLEQ-CPU
 
 ## About this repository
 
-This repository provides a standardized, hardware-verified reference implementation of a minimal **SUBLEQ CPU** core written in synthesizable Verilog. It serves as an educational resource and baseline architecture for a functional One Instruction Set Computer (OISC).
+This repository provides a standardized, hardware-verified reference implementation of a minimal **SUBLEQ CPU** core written in synthesizable Verilog and also in VHDL. It serves as an educational resource and baseline architecture for a functional One Instruction Set Computer (OISC).
 
 ---
 
