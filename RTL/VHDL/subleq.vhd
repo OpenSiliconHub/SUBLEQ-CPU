@@ -8,7 +8,7 @@ entity subleq is
   generic (
     G_RESET_ACTIVE_STATE : std_logic := '0';
     G_DATA_WIDTH         : natural   := 16;
-    G_ADDR_WIDTH         : natural   := G_DATA_WIDTH
+    G_ADDR_WIDTH         : natural   := 16
   );
   port (
     i_clk      : in  std_logic;
@@ -171,3 +171,5 @@ begin
     end if;
 
   end process;
+
+end;
