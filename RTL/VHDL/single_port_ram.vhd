@@ -7,7 +7,7 @@ entity single_port_ram is
   generic (
     G_DATA_WIDTH : natural := 16;
     G_ADDR_WIDTH : natural := 16;
-    G_INIT_MEM   : string  := "program.hex"
+    G_INIT_MEM   : string  := "mem_init.hex"
   );
   port (
     i_clk  : in  std_logic;

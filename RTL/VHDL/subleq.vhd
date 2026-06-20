@@ -8,7 +8,8 @@ entity subleq is
   generic (
     G_RESET_ACTIVE_STATE : std_logic := '0';
     G_DATA_WIDTH         : natural   := 16;
-    G_ADDR_WIDTH         : natural   := 16
+    G_ADDR_WIDTH         : natural   := 16;
+    G_INIT_MEM           : string    := "mem_init.hex"
   );
   port (
     i_clk      : in  std_logic;
@@ -53,7 +54,8 @@ begin
   u_single_port_ram : entity work.single_port_ram
     generic map (
       G_DATA_WIDTH => G_DATA_WIDTH,
-      G_ADDR_WIDTH => G_ADDR_WIDTH
+      G_ADDR_WIDTH => G_ADDR_WIDTH,
+      G_INIT_MEM   => G_INIT_MEM
     )
     port map (
       i_clk  => i_clk,
