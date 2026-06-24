@@ -8,8 +8,8 @@ entity subleq is
   generic (
     G_RESET_ACTIVE_STATE : std_logic := '0';
     G_DATA_WIDTH         : natural   := 16;
-    G_ADDR_WIDTH         : natural   := 16;
-    G_INIT_MEM           : string    := "mem_init.hex"
+    G_ADDR_WIDTH         : natural   := 16
+    -- G_INIT_MEM           : string    := "mem_init.hex"
   );
   port (
     i_clk      : in  std_logic;
