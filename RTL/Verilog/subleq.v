@@ -1,8 +1,8 @@
 module subleq
   #(
     parameter G_RESET_ACTIVE_STATE = 1'b0,
-    parameter G_DATA_WIDTH         = 10,
-    parameter G_ADDR_WIDTH         = 10
+    parameter G_DATA_WIDTH         = 16,
+    parameter G_ADDR_WIDTH         = 16
     )
   (
    input wire                        i_clk,
