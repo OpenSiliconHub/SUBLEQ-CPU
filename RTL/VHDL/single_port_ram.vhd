@@ -59,7 +59,7 @@ begin
   begin
     if (rising_edge(i_clk)) then
       if (i_we = '1') then
-        ram_block(to_integer(unsigned(i_addr)+1)) <= i_data;
+        ram_block(to_integer(unsigned(i_addr))) <= i_data;
       end if;
 
       o_data <= ram_block(to_integer(unsigned(i_addr)));
