@@ -2,9 +2,6 @@
 # Dynamic Verification Report & Smart Gatekeeper
 # ============================================================================
 
-# Total $equiv cells in the design (proven + unproven)
-set total_cells [yosys select -count t:\$equiv]
-
 # Run plain equiv_status (no -assert, so it never aborts the script) and
 # redirect its log output to a file so we can parse the proven/unproven
 # counts out of it ourselves.
@@ -16,6 +13,11 @@ yosys tee -q -o $logfile equiv_status
 set fh [open $logfile r]
 set log_text [read $fh]
 close $fh
+
+set total_cells 0
+if {[regexp {Found (\d+) \$equiv cells} $log_text -> n]} {
+    set total_cells $n
+}
 
 set unproven_count 0
 if {[regexp {are proven and (\d+) are unproven} $log_text -> n]} {
@@ -47,7 +49,7 @@ if {!$status_failed} {
 }
 
 puts "  \[+\] Mode:              FULL (Comprehensive Structural Evaluation)"
-puts "  \[+\] Metrics:          $fmt_metrics Active Proof Elements Monitored"
+puts "  \[+\] Metrics:           $fmt_metrics Active Proof Elements Monitored"
 puts "  \[+\] Languages:         Verilog-2005 vs VHDL-1993"
 puts "======================================================================"
 puts ""

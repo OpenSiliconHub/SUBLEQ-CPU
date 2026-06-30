@@ -16,7 +16,6 @@ rename single_port_ram verilog_behavioral
 # Temporarily save this workspace state
 design -stash verilog_workspace
  
- 
 # ==========================================
 # 2. Process the VHDL Model (Behavioral Target)
 # ==========================================
@@ -37,8 +36,7 @@ rename single_port_ram vhdl_behavioral
  
 # Temporarily save this workspace state
 design -stash vhdl_workspace
- 
- 
+  
 # ==========================================
 # 3. Combine both and run Behavioral Equivalence Miter
 # ==========================================
