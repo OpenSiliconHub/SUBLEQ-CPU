@@ -1,0 +1,66 @@
+# ==========================================
+# 1. Process the Verilog Model (Behavioral Reference)
+# ==========================================
+read_verilog ./Verilog/single_port_ram.v
+read_verilog ./Verilog/subleq.v
+hierarchy -top subleq
+proc
+flatten
+ 
+# Elaborate and map memory cells fully into standalone flip-flops
+memory
+memory_map
+ 
+# Rename the top module name 
+rename subleq verilog_behavioral
+ 
+# Temporarily save this workspace state
+design -stash verilog_workspace
+ 
+# ==========================================
+# 2. Process the VHDL Model (Behavioral Target)
+# ==========================================
+plugin -i ghdl
+ 
+# Parse and elaborate the VHDL file
+ghdl ./VHDL/single_port_ram.vhd ./VHDL/subleq.vhd -e subleq
+hierarchy -top subleq
+proc
+flatten
+ 
+# Elaborate and map memory cells fully into standalone flip-flops
+memory
+memory_map
+ 
+# Rename the top module name 
+rename subleq vhdl_behavioral
+ 
+# Temporarily save this workspace state
+design -stash vhdl_workspace
+  
+# ==========================================
+# 3. Combine both and run Behavioral Equivalence Miter
+# ==========================================
+# Create a fresh active workspace
+design -reset
+ 
+# Copy both modules out of their stashed spaces into this active space
+design -copy-from verilog_workspace verilog_behavioral
+design -copy-from vhdl_workspace vhdl_behavioral
+ 
+# Join the two behavioral representations into a verification miter block
+equiv_make verilog_behavioral vhdl_behavioral behavioral_miter_equiv
+ 
+# Target the miter design and activate structural logic matching
+hierarchy -top behavioral_miter_equiv
+equiv_simple
+equiv_struct
+equiv_induct -seq 12
+ 
+# Output the behavioral check pass/fail summary
+equiv_status
+
+# ============================================================================
+# 4. Dynamic Verification Report & Smart Gatekeeper
+# ============================================================================
+tcl report.tcl

@@ -9,7 +9,7 @@ entity subleq is
     G_RESET_ACTIVE_STATE : std_logic := '0';
     G_DATA_WIDTH         : natural   := 16;
     G_ADDR_WIDTH         : natural   := 16
-    -- G_INIT_MEM           : string    := "mem_init.hex"
+  -- G_INIT_MEM           : string    := "mem_init.hex"
   );
   port (
     i_clk      : in  std_logic;
@@ -35,16 +35,20 @@ architecture rtl of subleq is
     SUBLEQ_WRITEBACK,
     SUBLEQ_BRANCH_CHECK
   );
-  signal subleq_sm   : subleq_sm_t                                 := SUBLEQ_RESET;
-  signal pc          : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
-  signal ir_a        : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
-  signal ir_b        : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
-  signal ir_c        : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
-  signal data_a      : std_logic_vector(G_DATA_WIDTH - 1 downto 0) := (others => '0');
-  signal data_b      : std_logic_vector(G_DATA_WIDTH - 1 downto 0) := (others => '0');
-  signal subleq_we   : std_logic                                   := '0';
-  signal subleq_addr : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
-  signal subleq_data : std_logic_vector(G_DATA_WIDTH - 1 downto 0) := (others => '0');
+  signal subleq_sm     : subleq_sm_t                                 := SUBLEQ_RESET;
+  signal diff          : std_logic_vector(G_DATA_WIDTH - 1 downto 0);
+  signal overflow      : std_logic;
+  signal sign          : std_logic;
+  signal leq_condition : std_logic;
+  signal pc            : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
+  signal ir_a          : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
+  signal ir_b          : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
+  signal ir_c          : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
+  signal data_a        : std_logic_vector(G_DATA_WIDTH - 1 downto 0) := (others => '0');
+  signal data_b        : std_logic_vector(G_DATA_WIDTH - 1 downto 0) := (others => '0');
+  signal subleq_we     : std_logic                                   := '0';
+  signal subleq_addr   : std_logic_vector(G_ADDR_WIDTH - 1 downto 0) := (others => '0');
+  signal subleq_data   : std_logic_vector(G_DATA_WIDTH - 1 downto 0) := (others => '0');
 
 begin
 
@@ -54,8 +58,8 @@ begin
   u_single_port_ram : entity work.single_port_ram
     generic map (
       G_DATA_WIDTH => G_DATA_WIDTH,
-      G_ADDR_WIDTH => G_ADDR_WIDTH,
-      G_INIT_MEM   => G_INIT_MEM
+      G_ADDR_WIDTH => G_ADDR_WIDTH
+    --G_INIT_MEM   => G_INIT_MEM
     )
     port map (
       i_clk  => i_clk,
@@ -69,7 +73,11 @@ begin
   ----------------------------------------------------------------------------------------------------------------------
   -- subleq_proc
   --
-  o_pc_debug <= pc;
+  diff          <= std_logic_vector(signed(data_b) - signed(data_a));
+  overflow      <= (data_a(data_a'high) xor data_b(data_b'high)) and (data_b(data_b'high) xor diff(diff'high));
+  sign          <= diff(diff'high);
+  leq_condition <= '1' when (unsigned(diff) = 0) else (sign xor overflow);
+  o_pc_debug    <= pc;
   subleq_proc : process (i_clk) is
   begin
     if (rising_edge(i_clk)) then
@@ -144,7 +152,7 @@ begin
             -- Send ALU to memory
             subleq_we   <= '1';
             subleq_addr <= ir_b;
-            subleq_data <= std_logic_vector(signed(data_b) - signed(data_a));
+            subleq_data <= diff; --std_logic_vector(signed(data_b) - signed(data_a));
             subleq_sm   <= SUBLEQ_BRANCH_CHECK;
 
           when SUBLEQ_BRANCH_CHECK =>
@@ -152,7 +160,7 @@ begin
             -- SUBLEQ_BRANCH_CHECK
             -- SUBLEQ is met update to pc to target data_c and address C
             -- SUBLEQ not met go to next instruction
-            if (signed(subleq_data) <= 0) then
+            if (leq_condition = '1') then
               pc          <= ir_c;
               subleq_addr <= ir_c;
             else
