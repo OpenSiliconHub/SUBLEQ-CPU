@@ -6,7 +6,7 @@ use std.textio.all;
 entity single_port_ram is
   generic (
     G_DATA_WIDTH : natural := 16;
-    G_ADDR_WIDTH : natural := 16
+    G_ADDR_WIDTH : natural := 8
     --G_INIT_MEM   : string  := "mem_init.hex"
   );
   port (

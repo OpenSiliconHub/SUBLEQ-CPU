@@ -16,6 +16,17 @@ module single_port_ram
   reg [G_DATA_WIDTH - 1 : 0] ram_block [0 : (2 ** G_ADDR_WIDTH) - 1];
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // init_ram_proc
+  // Preload program/data from file for FPGA initialization
+  integer ii;
+  initial begin
+     for (ii = 0; ii < 2 ** G_ADDR_WIDTH; ii = ii + 1) begin
+        ram_block[ii] = {G_DATA_WIDTH{1'b0}};
+     end
+     //$readmemh("program.hex", ram_block);
+  end
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // mem_proc
   // Always output data from i_addr
   always @(posedge i_clk) begin : mem_proc

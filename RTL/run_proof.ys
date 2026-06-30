@@ -61,17 +61,6 @@ equiv_struct
 equiv_status
 
 # ============================================================================
-# 4. Custom Scannable Verification Summary Report
+# 4. Dynamic Verification Report & Smart Gatekeeper
 # ============================================================================
-log ""
-log "======================================================================"
-log "                 BEHAVIORAL VERIFICATION REPORT                       "
-log "======================================================================"
-log "  [+] Status:            SUCCESS                                      "
-log "  [+] Mode:              FULL (Comprehensive Bit-Blasted Matrix)      "
-log "  [+] Metrics:           1,048,592 Tracking Points Monitored          "
-log "  [+] Languages:         Verilog-2005 vs VHDL-1993                    "
-log "  [+] Match Quality:     100% Behavioral Equivalence Proven           "
-log "  [+] Violations:        0 Mismatches Detected                        "
-log "======================================================================"
-log ""
+tcl report.tcl
