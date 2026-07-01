@@ -8,7 +8,6 @@ flatten
  
 # Elaborate and map memory cells fully into standalone flip-flops
 memory
-memory_map
  
 # Rename the top module name 
 rename single_port_ram verilog_behavioral
@@ -29,7 +28,6 @@ flatten
  
 # Elaborate and map memory cells fully into standalone flip-flops
 memory
-memory_map
  
 # Rename the top module name 
 rename single_port_ram vhdl_behavioral

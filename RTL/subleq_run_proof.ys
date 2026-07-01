@@ -4,12 +4,13 @@
 read_verilog ./Verilog/single_port_ram.v
 read_verilog ./Verilog/subleq.v
 hierarchy -top subleq
+chparam -set G_ADDR_WIDTH 8 -set G_DATA_WIDTH 8 subleq
 proc
 flatten
  
 # Elaborate and map memory cells fully into standalone flip-flops
+# Don't need memory_map any longer
 memory
-memory_map
  
 # Rename the top module name 
 rename subleq verilog_behavioral
@@ -23,14 +24,14 @@ design -stash verilog_workspace
 plugin -i ghdl
  
 # Parse and elaborate the VHDL file
-ghdl ./VHDL/single_port_ram.vhd ./VHDL/subleq.vhd -e subleq
+ghdl ./VHDL/single_port_ram.vhd ./VHDL/subleq.vhd -e subleq -gG_ADDR_WIDTH=8 -gG_DATA_WIDTH=8
 hierarchy -top subleq
 proc
 flatten
  
 # Elaborate and map memory cells fully into standalone flip-flops
+# Don't need memory_map any longer
 memory
-memory_map
  
 # Rename the top module name 
 rename subleq vhdl_behavioral
