@@ -1,5 +1,7 @@
 # Contributing to SUBLEQ-CPU
 
+> **Archived:** This project is no longer maintained. Fork it to continue development.
+
 Thank you for your interest in contributing to the **OSH-SUBLEQ-CPU** project!  
 This is now a **community-driven** open-source hardware project. We welcome contributions of all kinds.
 
